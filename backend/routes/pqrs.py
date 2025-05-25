@@ -6,9 +6,12 @@ router = APIRouter()
 
 class PQRSRequest(BaseModel):
     titulo: str
-    tipo: str  # 'peticion', 'queja', 'reclamo', 'sugerencia'
+    tipo: str
     descripcion: str
     usuario_id: str
+
+class PQRSUpdateRequest(PQRSRequest):  # 🔁 NUEVO MODELO CON ESTADO
+    estado: str
 
 @router.post("/")
 def crear_pqrs(pqrs: PQRSRequest):
@@ -44,8 +47,8 @@ def obtener_pqrs_por_id(pqrs_id: str):
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
-@router.put("/{pqrs_id}")
-def actualizar_pqrs(pqrs_id: str, pqrs: PQRSRequest):
+@router.put("/{pqrs_id}")  # 🔁 AQUÍ EL CAMBIO
+def actualizar_pqrs(pqrs_id: str, pqrs: PQRSUpdateRequest):
     try:
         result = supabase.table("pqrs").update(pqrs.dict()).eq("id", pqrs_id).execute()
         return {"mensaje": "PQRS actualizada", "data": result.data}
