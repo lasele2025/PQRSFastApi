@@ -10,6 +10,7 @@ class PQRSRequest(BaseModel):
     tipo: str  # 'peticion', 'queja', 'reclamo', 'sugerencia'
     descripcion: str
     usuario_id: str
+    archivo_url: Optional[HttpUrl] = None  # valida la url bro
 
 # Modelo extendido para actualización que incluye 'estado'
 class PQRSUpdateRequest(PQRSRequest):
